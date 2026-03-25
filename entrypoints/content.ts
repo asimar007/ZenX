@@ -87,13 +87,6 @@ export default defineContentScript({
 
       const result = classifyInstant(text, settings);
 
-      if (settings.debugMode) {
-        console.log("[X Feed Filter]", {
-          text: text.substring(0, 80) + "...",
-          result,
-        });
-      }
-
       if (result.decision === "hide") {
         hideTweet(
           tweetElement,

@@ -159,13 +159,6 @@ export default function App() {
               onChange={(v) => updateSettings({ showFilteredCount: v })}
               className="bg-transparent hover:bg-slate-800/50 p-2"
             />
-            <CheckboxItem
-              id="debugMode"
-              label="Debug mode (console logs)"
-              checked={settings.debugMode}
-              onChange={(v) => updateSettings({ debugMode: v })}
-              className="bg-transparent hover:bg-slate-800/50 p-2"
-            />
           </div>
         </section>
 

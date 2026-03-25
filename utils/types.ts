@@ -10,7 +10,6 @@ export interface Settings {
   blockWar: boolean;
   blockControversial: boolean;
   showFilteredCount: boolean;
-  debugMode: boolean;
   customKeywords: string[];
   politicsKeywords: string[];
   racismKeywords: string[];
@@ -27,7 +26,6 @@ export const DEFAULT_SETTINGS: Settings = {
   blockWar: true,
   blockControversial: true,
   showFilteredCount: true,
-  debugMode: false,
   customKeywords: [],
   politicsKeywords: [
     "trump", "biden", "democrat", "republican", "gop", "maga", "liberal", 
