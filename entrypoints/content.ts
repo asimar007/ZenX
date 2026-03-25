@@ -22,6 +22,19 @@ export default defineContentScript({
     let settings: Settings = { ...DEFAULT_SETTINGS };
     let processedTweets = new WeakSet<Element>();
     const filterStats = { filtered: 0, shown: 0 };
+    let statsSaveTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function scheduleStatsSave() {
+      if (statsSaveTimer) clearTimeout(statsSaveTimer);
+      statsSaveTimer = setTimeout(() => {
+        statsStorage.setValue({
+          filtered: filterStats.filtered,
+          allowed: filterStats.shown,
+          total: filterStats.filtered + filterStats.shown,
+        });
+        statsSaveTimer = null;
+      }, 500);
+    }
 
     // ============================================
     // Initialization
@@ -50,6 +63,15 @@ export default defineContentScript({
     // ============================================
     // Tweet processing
     // ============================================
+
+    function cleanupHiddenTweets() {
+      document.querySelectorAll(".xfeed-tweet-hidden").forEach((el) => {
+        el.classList.remove("xfeed-tweet-hidden");
+      });
+      document
+        .querySelectorAll(".xfeed-hidden-tweet")
+        .forEach((el) => el.remove());
+    }
 
     function observeFeed() {
       const observer = new MutationObserver((mutations) => {
@@ -98,44 +120,33 @@ export default defineContentScript({
             matchedKeyword: result.matchedKeyword,
           },
           () => {
-            // On un-hide callback
             filterStats.filtered--;
             filterStats.shown++;
             updateStatsDisplay(filterStats.filtered);
-            statsStorage.setValue({ filtered: filterStats.filtered, allowed: filterStats.shown, total: filterStats.filtered + filterStats.shown });
+            scheduleStatsSave();
           },
         );
 
         filterStats.filtered++;
         updateStatsDisplay(filterStats.filtered);
-        statsStorage.setValue({ filtered: filterStats.filtered, allowed: filterStats.shown, total: filterStats.filtered + filterStats.shown });
+        scheduleStatsSave();
       } else {
         filterStats.shown++;
       }
     }
 
-    // ============================================
-    // Settings listener (live reload)
-    // ============================================
-
-    settingsStorage.watch((newSettings) => {
-      if (!newSettings) return;
-      settings = newSettings;
+    browser.runtime.onMessage.addListener((message: any) => {
+      if (message.action !== "settingsUpdated" || !message.settings) return;
+      settings = message.settings;
 
       if (!settings.enabled) {
-        document.querySelectorAll(".xfeed-tweet-hidden").forEach((el) => {
-          el.classList.remove("xfeed-tweet-hidden");
-        });
-        document
-          .querySelectorAll(".xfeed-hidden-tweet")
-          .forEach((el) => el.remove());
+        cleanupHiddenTweets();
         removeStatsDisplay();
       } else {
+        cleanupHiddenTweets();
+        processedTweets = new WeakSet<Element>();
         if (settings.showFilteredCount) createStatsDisplay();
         else removeStatsDisplay();
-
-        // Re-evaluate all visible tweets with updated settings
-        processedTweets = new WeakSet<Element>();
         processExistingTweets();
       }
     });

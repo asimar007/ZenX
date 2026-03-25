@@ -117,7 +117,8 @@ export const DEFAULT_STATS: Stats = {
 export type Message =
   | { action: 'getStats' }
   | { action: 'updateStats'; filtered: boolean }
-  | { action: 'resetStats' };
+  | { action: 'resetStats' }
+  | { action: 'settingsUpdated'; settings: Settings };
 
 export type MessageResponse =
   | { success: true; result: ClassificationResult }

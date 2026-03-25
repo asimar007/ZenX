@@ -38,6 +38,23 @@ export default defineBackground(() => {
     },
   );
 
+  chrome.storage.onChanged.addListener((changes, namespace) => {
+    if (namespace === "sync" && changes.settings) {
+      browser.tabs.query({}).then((tabs) => {
+        for (const tab of tabs) {
+          if (tab.id) {
+            browser.tabs
+              .sendMessage(tab.id, {
+                action: "settingsUpdated",
+                settings: changes.settings.newValue,
+              })
+              .catch(() => {});
+          }
+        }
+      });
+    }
+  });
+
   // Initialize defaults on install
   browser.runtime.onInstalled.addListener(async () => {
     await statsStorage.setValue({ ...DEFAULT_STATS });
