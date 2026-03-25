@@ -1,8 +1,8 @@
 {
-  "name": "tweet-filter",
+  "name": "Tweet Filter",
   "description": "A browser extension that filters tweets based on keywords",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "wxt",
