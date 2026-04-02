@@ -56,11 +56,17 @@ export default defineBackground(() => {
   });
 
   // Initialize defaults on install
-  browser.runtime.onInstalled.addListener(async () => {
-    await statsStorage.setValue({ ...DEFAULT_STATS });
-    const existing = await settingsStorage.getValue();
-    if (!existing) {
+  browser.runtime.onInstalled.addListener(async (details) => {
+    if (details.reason === "install") {
+      await statsStorage.setValue({ ...DEFAULT_STATS });
       await settingsStorage.setValue({ ...DEFAULT_SETTINGS });
+      browser.tabs.create({ url: browser.runtime.getURL("/onboarding.html") });
+    } else {
+      await statsStorage.setValue({ ...DEFAULT_STATS });
+      const existing = await settingsStorage.getValue();
+      if (!existing) {
+        await settingsStorage.setValue({ ...DEFAULT_SETTINGS });
+      }
     }
   });
 });
