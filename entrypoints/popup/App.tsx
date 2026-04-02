@@ -52,7 +52,10 @@ export default function App() {
     <div className="flex flex-col w-[360px] max-h-[600px] overflow-y-auto bg-slate-900 text-slate-100 font-sans shadow-2xl antialiased">
       <Header
         enabled={settings.enabled}
-        onToggle={(v) => updateSettings({ enabled: v })}
+        onToggle={async (v) => {
+          updateSettings({ enabled: v });
+          await saveSettings({ ...settings, enabled: v });
+        }}
       />
 
       <StatsBar stats={stats} onReset={resetStats} />

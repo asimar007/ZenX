@@ -46,8 +46,9 @@ export default defineContentScript({
       settings = (await settingsStorage.getValue()) ?? DEFAULT_SETTINGS;
 
       if (!settings.enabled) {
-        console.log("[X Feed Filter] Extension is disabled");
-        return;
+        console.log("[X Feed Filter] Extension starts disabled");
+        // We do not return here. We must start observeFeed() so we can process
+        // new tweets if the user enables the extension later.
       }
 
       if (settings.showFilteredCount) {
@@ -101,6 +102,7 @@ export default defineContentScript({
     }
 
     function processTweet(tweetElement: HTMLElement) {
+      if (!settings.enabled) return;
       if (processedTweets.has(tweetElement)) return;
       processedTweets.add(tweetElement);
 
