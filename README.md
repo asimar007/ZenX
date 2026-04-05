@@ -12,6 +12,8 @@
 
 <br/>
 
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+
 [🌐 Website](https://zenx.asimsk.site) · [📦 GitHub](https://github.com/asimar007/ZenX) · [🐛 Report Bug](https://github.com/asimar007/ZenX/issues) · [✨ Request Feature](https://github.com/asimar007/ZenX/issues)
 
 </div>
