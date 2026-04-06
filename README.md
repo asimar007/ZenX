@@ -80,66 +80,15 @@ All filtering happens **100% locally in your browser**. No data is ever sent to 
 
 ## Installation
 
-> ZenX is not yet listed on the Chrome Web Store. You can install it directly from source in under 2 minutes.
+> ZenX is not yet on the Chrome Web Store.
 
-### Step 1 — Clone & Build
+**Easiest way — no terminal needed:**
 
-```bash
-# Clone the repository
+1. Download `zenx-1.0.0.zip` from [GitHub Releases](https://github.com/asimar007/ZenX/releases/tag/v1.0.0)
+2. Unzip it anywhere on your computer
+3. Open `chrome://extensions` → enable **Developer Mode** → click **"Load unpacked"** → select the unzipped folder
 
-git  clone  https://github.com/asimar007/ZenX.git
-cd  ZenX
-
-# Install dependencies
-
-bun  install
-
-# Build the extension
-
-bun  run  build
-```
-
-This creates a `.output/chrome-mv3/` folder — that is your built extension.
-
-### Step 2 — Load in Chrome
-
-1. Open Chrome and navigate to `chrome://extensions`
-
-2. Enable **Developer Mode** (toggle in the top-right corner)
-
-3. Click **"Load unpacked"**
-
-4. Select the `.output/chrome-mv3/` folder inside your cloned repo
-
-5. ZenX is now installed — pin it to your toolbar for easy access
-
-<details>
-
-<summary><b>Firefox Installation</b></summary>
-
-```bash
-
-# Build for Firefox
-
-bun  run  build:firefox
-
-```
-
-1. Go to `about:debugging#/runtime/this-firefox`
-
-2. Click **"Load Temporary Add-on"**
-
-3. Select any file inside `.output/firefox-mv2/`
-
-</details>
-
-### Step 3 — Configure ZenX
-
-1. Click the **ZenX icon** in your browser toolbar
-
-2. Complete the **onboarding wizard** to pick your filter categories
-
-3. Visit **x.com** — your feed is now filtered
+**Full guide (Chrome, Firefox, build from source, updating, troubleshooting): [INSTALLATION.md](INSTALLATION.md)**
 
 ---
 
