@@ -48,7 +48,7 @@ Twitter can be overwhelming — politics, hate speech, war news, and controversy
 
 ### User Experience
 
-- 📊 **Live Stats** — See how many tweets were filtered vs. allowed in real time
+- 📊 **Live Stats** — See how many tweets were filtered out of all the tweets scanned, in real time
 
 - 🔄 **Real-time Sync** — Settings sync across all your devices via Chrome Sync
 
@@ -72,7 +72,7 @@ ZenX runs a lightweight content script on `x.com` that:
 
 3.  **Scores** each tweet against your active keyword categories using regex matching
 
-4.  **Hides** matched tweets behind a shield overlay (`🛡️ Filtered — reason`)
+4.  **Hides** matched tweets behind a slim row that names the category and matched keyword, with a **Reveal** button
 
 5.  **Logs** stats to local storage and updates the live counter badge
 
@@ -86,7 +86,7 @@ All filtering happens **100% locally in your browser**. No data is ever sent to 
 
 **Easiest way — no terminal needed:**
 
-1. Download `zenx-1.0.0.zip` from [GitHub Releases](https://github.com/asimar007/ZenX/releases/tag/v1.0.0)
+1. Download the `.zip` file from the [latest GitHub release](https://github.com/asimar007/ZenX/releases/latest)
 2. Unzip it anywhere on your computer
 3. Open `chrome://extensions` → enable **Developer Mode** → click **"Load unpacked"** → select the unzipped folder
 
@@ -104,15 +104,19 @@ Click the switch in the header to enable or disable filtering without changing y
 
 #### Filter Categories
 
-Check or uncheck each category. Expand any category to view or edit individual keywords.
+Switch each category on or off. Open **View keywords** on any category to see or remove individual keywords.
 
 #### Custom Keywords
 
-Type a word or phrase and press Enter to add it to your personal blocklist.
+The **Custom Keywords** card sits with the other filters. Type a word or phrase and press Enter (or **Add**) to block it.
 
 #### Stats Bar
 
-See how many tweets were filtered vs. allowed. Click reset to start fresh.
+See how many tweets were filtered and how many were scanned. Click the reset button to start fresh.
+
+#### Saving
+
+Category and keyword changes apply when you click **Save changes** at the bottom of the popup. Open X tabs update automatically — no refresh needed.
 
 ---
 

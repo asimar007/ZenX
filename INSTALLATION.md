@@ -11,7 +11,7 @@
 - [Firefox Installation](#firefox-installation)
 - [Updating ZenX](#updating-zenx)
 - [Uninstalling ZenX](#uninstalling-zenx)
-- [Troubleshooting](#troubleshooting)
+- [Need Help?](#need-help)
 
 ---
 
@@ -23,9 +23,9 @@ No Git, no terminal, no build tools required.
 
 Go to the latest release and download the zip file:
 
-**[github.com/asimar007/ZenX/releases/tag/v1.0.0](https://github.com/asimar007/ZenX/releases/tag/v1.0.0)**
+**[github.com/asimar007/ZenX/releases/latest](https://github.com/asimar007/ZenX/releases/latest)**
 
-Download the file named `zenx-1.0.0.zip`.
+Under **Assets**, download the `.zip` file.
 
 ### Step 2 — Unzip It
 

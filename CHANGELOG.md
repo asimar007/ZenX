@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.1.0] - 2026-10-05
+
+### Added
+- Category icons for every filter, replacing emoji
+- Custom Keywords card in the Filters list, styled like the built-in categories
+- Keyword chips on a dedicated panel, sorted shortest first
+- Scanned-tweet count next to the filtered count in the popup
+- Links to [zenx.asimsk.site](https://zenx.asimsk.site) from the popup and onboarding page
+
+### Changed
+- Redesigned popup, onboarding page, and in-feed UI to match the ZenX website: cream and botanical-green palette, Inter and Cormorant Garamond (bundled with the extension, no external font requests)
+- Hidden tweets now show "Tweet hidden by ZenX" with a category · keyword tag and a **Reveal** button (was **Show**)
+- Popup keeps the **Save changes** button pinned to the bottom and shows an Active / Paused label next to the main switch
+- Open X tabs read setting changes directly from storage instead of waiting for a background broadcast
+- Settings and stats use WXT's storage API; keyword matching was simplified with identical results
+
+### Removed
+- Unused background message handlers and notification styles
+- `@types/chrome` dev dependency
+
+---
+
 ## [1.0.0] - 2026-04-03
 
 ### Added
