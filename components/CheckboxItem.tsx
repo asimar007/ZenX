@@ -7,24 +7,27 @@ export function CheckboxItem({
   label,
   meta,
   icon,
-  checked,
+  checked = true,
   onChange,
   children,
 }: {
   label: string;
   meta?: string;
   icon: IconName;
-  checked: boolean;
-  onChange: (v: boolean) => void;
+  checked?: boolean;
+  /** Omit for an always-on card with no switch. */
+  onChange?: (v: boolean) => void;
   children?: ReactNode;
 }) {
+  const Header = onChange ? 'label' : 'div';
+
   return (
     <div
       className={`rounded-xl px-3.5 py-3 transition-colors duration-200 ${
         checked ? 'bg-keylime-wash' : 'bg-cream-paper ring-1 ring-inset ring-border-mist hover:bg-keylime-wash/40'
       }`}
     >
-      <label className="flex items-center gap-3 cursor-pointer">
+      <Header className={`flex items-center gap-3 ${onChange ? 'cursor-pointer' : ''}`}>
         <span
           className={`flex items-center justify-center size-8 rounded-full transition-colors duration-200 ${
             checked ? 'bg-mint-veil text-forest-ink' : 'bg-border-mist text-charcoal/70'
@@ -36,9 +39,9 @@ export function CheckboxItem({
           <span className={`block text-sm ${checked ? 'text-forest-ink' : 'text-charcoal'}`}>{label}</span>
           {meta && <span className="block text-xs text-charcoal/70">{meta}</span>}
         </span>
-        <Switch checked={checked} onChange={onChange} />
-      </label>
-      {children && <div className="mt-2.5 pl-11">{children}</div>}
+        {onChange && <Switch checked={checked} onChange={onChange} />}
+      </Header>
+      {children && <div className="mt-3">{children}</div>}
     </div>
   );
 }

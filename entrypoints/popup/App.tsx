@@ -87,13 +87,12 @@ export default function App() {
                 )}
               </CheckboxItem>
             ))}
+            <CustomKeywordManager
+              settings={settings}
+              updateSettings={updateSettings}
+            />
           </div>
         </section>
-
-        <CustomKeywordManager
-          settings={settings}
-          updateSettings={updateSettings}
-        />
 
         <section className="flex flex-col gap-3">
           <h2 className={sectionTitle}>Display</h2>
