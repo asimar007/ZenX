@@ -15,17 +15,15 @@ export function CustomKeywordManager({
     if (!keyword) return;
     
     // Check if it already exists
-    const currentKeywords = settings.customKeywords || [];
-    if (!currentKeywords.includes(keyword)) {
-      updateSettings({ customKeywords: [...currentKeywords, keyword] });
+    if (!settings.customKeywords.includes(keyword)) {
+      updateSettings({ customKeywords: [...settings.customKeywords, keyword] });
     }
     setCustomKeywordInput('');
   };
 
   const removeCustomKeyword = (keywordToRemove: string) => {
-    const currentKeywords = settings.customKeywords || [];
     updateSettings({ 
-      customKeywords: currentKeywords.filter(k => k !== keywordToRemove) 
+      customKeywords: settings.customKeywords.filter(k => k !== keywordToRemove) 
     });
   };
 
@@ -58,7 +56,7 @@ export function CustomKeywordManager({
           </button>
         </div>
         
-        {(settings.customKeywords && settings.customKeywords.length > 0) && (
+        {settings.customKeywords.length > 0 && (
           <div className="flex flex-wrap gap-2 mt-1">
             {settings.customKeywords.map((keyword, index) => (
               <div 

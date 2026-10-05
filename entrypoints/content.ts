@@ -1,4 +1,4 @@
-import { classifyInstant } from "@/utils/classifier";
+import { classify } from "@/utils/classifier";
 import { settingsStorage, statsStorage } from "@/utils/storage";
 import { DEFAULT_SETTINGS } from "@/utils/types";
 import type { Settings } from "@/utils/types";
@@ -41,24 +41,15 @@ export default defineContentScript({
     // ============================================
 
     async function init() {
-      console.log("[ZenX] Initializing...");
-
-      settings = (await settingsStorage.getValue()) ?? DEFAULT_SETTINGS;
-
-      if (!settings.enabled) {
-        console.log("[ZenX] Extension starts disabled");
-        // We do not return here. We must start observeFeed() so we can process
-        // new tweets if the user enables the extension later.
-      }
+      settings = await settingsStorage.getValue();
 
       if (settings.showFilteredCount) {
         createStatsDisplay();
       }
 
+      // Observe even when disabled so new tweets get processed once re-enabled.
       observeFeed();
       processExistingTweets();
-
-      console.log("[ZenX] Ready! (Keyword-Only Matcher)");
     }
 
     // ============================================
@@ -109,25 +100,15 @@ export default defineContentScript({
       const text = extractTweetText(tweetElement);
       if (!text || text.length < 10) return;
 
-      const result = classifyInstant(text, settings);
+      const match = classify(text, settings);
 
-      if (result.decision === "hide") {
-        hideTweet(
-          tweetElement,
-          {
-            action: "hide",
-            category: result.blockCategory ?? null,
-            confidence: result.blockScore ?? 0.5,
-            method: "keyword",
-            matchedKeyword: result.matchedKeyword,
-          },
-          () => {
-            filterStats.filtered--;
-            filterStats.shown++;
-            updateStatsDisplay(filterStats.filtered);
-            scheduleStatsSave();
-          },
-        );
+      if (match) {
+        hideTweet(tweetElement, match, () => {
+          filterStats.filtered--;
+          filterStats.shown++;
+          updateStatsDisplay(filterStats.filtered);
+          scheduleStatsSave();
+        });
 
         filterStats.filtered++;
         updateStatsDisplay(filterStats.filtered);
@@ -137,15 +118,13 @@ export default defineContentScript({
       }
     }
 
-    browser.runtime.onMessage.addListener((message: any) => {
-      if (message.action !== "settingsUpdated" || !message.settings) return;
-      settings = message.settings;
+    settingsStorage.watch((newSettings) => {
+      settings = newSettings;
+      cleanupHiddenTweets();
 
       if (!settings.enabled) {
-        cleanupHiddenTweets();
         removeStatsDisplay();
       } else {
-        cleanupHiddenTweets();
         processedTweets = new WeakSet<Element>();
         if (settings.showFilteredCount) createStatsDisplay();
         else removeStatsDisplay();

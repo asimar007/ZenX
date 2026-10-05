@@ -40,6 +40,12 @@
   font-weight: 600 !important;
 }
 
+.xfeed-hidden-keyword {
+  opacity: 0.7 !important;
+  font-size: 0.9em !important;
+  margin-left: 4px !important;
+}
+
 .xfeed-show-btn {
   background: transparent !important;
   border: 1px solid var(--border-color, #38444d) !important;
@@ -95,59 +101,10 @@
   font-weight: 700 !important;
 }
 
-/* Notification toast */
-.xfeed-notification {
-  position: fixed !important;
-  top: 20px !important;
-  right: 20px !important;
-  background: var(--background-color, #15202b) !important;
-  border: 1px solid var(--border-color, #38444d) !important;
-  border-radius: 8px !important;
-  padding: 12px 20px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
-  z-index: 10000 !important;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-  font-size: 14px !important;
-  color: var(--text-color, #ffffff) !important;
-  animation: xfeed-slide-in 0.3s ease !important;
-}
-
-.xfeed-notification-warning {
-  border-color: #f59e0b !important;
-  background: rgba(245, 158, 11, 0.1) !important;
-}
-.xfeed-notification-error {
-  border-color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.1) !important;
-}
-.xfeed-notification-success {
-  border-color: #22c55e !important;
-  background: rgba(34, 197, 94, 0.1) !important;
-}
-
-.xfeed-notification-fade {
-  opacity: 0 !important;
-  transform: translateX(100%) !important;
-  transition: all 0.3s ease !important;
-}
-
-@keyframes xfeed-slide-in {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 /* Theme support */
 @media (prefers-color-scheme: light) {
   .xfeed-hidden-tweet,
-  #xfeed-filter-stats,
-  .xfeed-notification {
+  #xfeed-filter-stats {
     --background-color: #ffffff;
     --border-color: #cfd9de;
     --text-color: #0f1419;
@@ -157,8 +114,7 @@
 }
 
 [data-color-scheme="dim"] .xfeed-hidden-tweet,
-[data-color-scheme="dim"] #xfeed-filter-stats,
-[data-color-scheme="dim"] .xfeed-notification {
+[data-color-scheme="dim"] #xfeed-filter-stats {
   --background-color: #15202b;
   --border-color: #38444d;
   --text-color: #ffffff;
@@ -166,8 +122,7 @@
 }
 
 [data-color-scheme="dark"] .xfeed-hidden-tweet,
-[data-color-scheme="dark"] #xfeed-filter-stats,
-[data-color-scheme="dark"] .xfeed-notification {
+[data-color-scheme="dark"] #xfeed-filter-stats {
   --background-color: #000000;
   --border-color: #2f3336;
   --text-color: #e7e9ea;
@@ -175,8 +130,7 @@
 }
 
 [data-color-scheme="light"] .xfeed-hidden-tweet,
-[data-color-scheme="light"] #xfeed-filter-stats,
-[data-color-scheme="light"] .xfeed-notification {
+[data-color-scheme="light"] #xfeed-filter-stats {
   --background-color: #ffffff;
   --border-color: #eff3f4;
   --text-color: #0f1419;

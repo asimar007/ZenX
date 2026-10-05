@@ -7,9 +7,7 @@ export function useStats() {
   const [stats, setStats] = useState<Stats>({ ...DEFAULT_STATS });
 
   useEffect(() => {
-    statsStorage.getValue().then((s) => {
-      if (s) setStats(s);
-    });
+    statsStorage.getValue().then(setStats);
     statsStorage.watch((s) => setStats(s));
   }, []);
 

@@ -1,90 +1,39 @@
-import type { Settings, InstantResult } from "./types";
+import { CATEGORIES } from "./types";
+import type { Settings } from "./types";
 
-// ============================================
-// KEYWORD LISTS FOR INSTANT FILTERING
-// ============================================
-
-
-
-// Confidence thresholds
+export interface Match {
+  category: string;
+  keyword: string;
+}
 
 /**
- * Instant keyword-based classification — no API call needed.
- * Returns 'uncertain' when confidence is too low for either direction.
+ * Keyword-based classification. Returns the match to hide the tweet for, or null to show it.
+ * Custom keywords win; otherwise the category with the most matching keywords (capped at 4, earlier category wins ties).
  */
-export function classifyInstant(
-  text: string,
-  settings: Settings,
-): InstantResult {
-  const lowerText = text.toLowerCase();
-
-  let blockScore = 0;
-  let blockCategory: string | null = null;
-  let matchedKeyword: string | undefined = undefined;
-  let allowScore = 0;
-
-  // Check block keywords
-  const categories: Record<string, boolean> = {
-    politics: settings.blockPolitics,
-    racism: settings.blockRacism,
-    religion: settings.blockReligion,
-    war: settings.blockWar,
-    controversial: settings.blockControversial,
-  };
-
-  for (const [category, enabled] of Object.entries(categories)) {
-    if (!enabled) continue;
-
-    const keywords = (settings as any)[`${category}Keywords`] ?? [];
-    let categoryMatches = 0;
-    let firstMatchInCategory: string | undefined = undefined;
-
-    for (const keyword of keywords) {
-      const regex = new RegExp(`\\b${keyword}\\b`, "i");
-      if (regex.test(text)) {
-        categoryMatches++;
-        if (!firstMatchInCategory) {
-          firstMatchInCategory = keyword;
-        }
-      }
-    }
-
-    if (categoryMatches > 0) {
-      const categoryScore = Math.min(0.5 + categoryMatches * 0.15, 1.0);
-      if (categoryScore > blockScore) {
-        blockScore = categoryScore;
-        blockCategory = category;
-        matchedKeyword = firstMatchInCategory;
-      }
+export function classify(text: string, settings: Settings): Match | null {
+  for (const keyword of settings.customKeywords) {
+    // Escape special characters in the custom keyword just in case
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`\\b${escapedKeyword}\\b`, "i").test(text)) {
+      return { category: "custom", keyword };
     }
   }
 
-  // Check custom keywords
-  if (settings.customKeywords && settings.customKeywords.length > 0) {
-    for (const keyword of settings.customKeywords) {
-      // Escape special characters in the custom keyword just in case
-      const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const regex = new RegExp(`\\b${escapedKeyword}\\b`, "i");
-      if (regex.test(text)) {
-        // High block score for custom keywords since the user explicitly added them
-        blockScore = 1.0;
-        blockCategory = "custom";
-        matchedKeyword = keyword;
-        break;
-      }
+  let best: Match | null = null;
+  let bestCount = 0;
+
+  for (const { id, toggle, keywords } of CATEGORIES) {
+    if (!settings[toggle]) continue;
+
+    const matches = settings[keywords].filter((keyword) =>
+      new RegExp(`\\b${keyword}\\b`, "i").test(text),
+    );
+    const count = Math.min(matches.length, 4);
+    if (count > bestCount) {
+      bestCount = count;
+      best = { category: id, keyword: matches[0] };
     }
   }
 
-  // Decision logic
-  if (blockScore >= 0.3) {
-    return {
-      decision: "hide",
-      blockScore,
-      blockCategory: blockCategory ?? undefined,
-      method: "keyword",
-      matchedKeyword,
-    };
-  } else {
-    return { decision: "show", confidence: 0.9, method: "keyword" };
-  }
+  return best;
 }

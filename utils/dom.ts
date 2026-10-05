@@ -13,3 +13,10 @@ export function extractTweetText(tweetElement: HTMLElement): string {
 
   return text.trim();
 }
+
+export function el(tag: string, className: string, text?: string): HTMLElement {
+  const node = document.createElement(tag);
+  node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
+}

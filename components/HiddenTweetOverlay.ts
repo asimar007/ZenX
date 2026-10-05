@@ -1,52 +1,29 @@
-import type { ClassificationResult } from '@/utils/types';
+import type { Match } from '@/utils/classifier';
+import { el } from '@/utils/dom';
 
 export function hideTweet(
-  tweetElement: HTMLElement, 
-  result: ClassificationResult,
+  tweetElement: HTMLElement,
+  match: Match,
   onShow: () => void
 ): void {
   const cellInner = tweetElement.closest<HTMLElement>('[data-testid="cellInnerDiv"]');
   const targetElement = cellInner || tweetElement;
 
-  const overlay = document.createElement('div');
-  overlay.className = 'xfeed-hidden-tweet';
-
-  const contentWrapper = document.createElement('div');
-  contentWrapper.className = 'xfeed-hidden-content';
-
-  const iconSpan = document.createElement('span');
-  iconSpan.className = 'xfeed-hidden-icon';
-  iconSpan.textContent = '🛡️';
-
-  const textSpan = document.createElement('span');
-  textSpan.className = 'xfeed-hidden-text';
-  
-  const hiddenPrefix = document.createTextNode('Hidden: ');
   const categoryStrong = document.createElement('strong');
-  categoryStrong.textContent = result.category || 'Filtered';
-  
-  textSpan.appendChild(hiddenPrefix);
-  textSpan.appendChild(categoryStrong);
+  categoryStrong.textContent = match.category;
 
-  if (result.matchedKeyword) {
-    const keywordSpan = document.createElement('span');
-    keywordSpan.className = 'xfeed-hidden-keyword';
-    keywordSpan.textContent = ` (${result.matchedKeyword})`;
-    keywordSpan.style.opacity = '0.7';
-    keywordSpan.style.fontSize = '0.9em';
-    keywordSpan.style.marginLeft = '4px';
-    textSpan.appendChild(keywordSpan);
+  const textSpan = el('span', 'xfeed-hidden-text');
+  textSpan.append('Hidden: ', categoryStrong);
+  if (match.keyword) {
+    textSpan.append(el('span', 'xfeed-hidden-keyword', ` (${match.keyword})`));
   }
 
-  const showBtn = document.createElement('button');
-  showBtn.className = 'xfeed-show-btn';
-  showBtn.textContent = 'Show';
+  const showBtn = el('button', 'xfeed-show-btn', 'Show');
+  const contentWrapper = el('div', 'xfeed-hidden-content');
+  contentWrapper.append(el('span', 'xfeed-hidden-icon', '🛡️'), textSpan, showBtn);
 
-  contentWrapper.appendChild(iconSpan);
-  contentWrapper.appendChild(textSpan);
-  contentWrapper.appendChild(showBtn);
-
-  overlay.appendChild(contentWrapper);
+  const overlay = el('div', 'xfeed-hidden-tweet');
+  overlay.append(contentWrapper);
 
   showBtn.addEventListener('click', (e) => {
     e.stopPropagation();

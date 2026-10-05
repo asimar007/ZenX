@@ -209,28 +209,13 @@ export const DEFAULT_SETTINGS: Settings = {
   ],
 };
 
-// ============================================
-// Classification
-// ============================================
-
-export interface ClassificationResult {
-  action: "show" | "hide";
-  category: string | null;
-  confidence: number;
-  reason?: string;
-  method?: "keyword";
-  matchedKeyword?: string;
-}
-
-export interface InstantResult {
-  decision: "show" | "hide";
-  confidence?: number;
-  category?: string;
-  blockScore?: number;
-  blockCategory?: string | null;
-  method: "keyword";
-  matchedKeyword?: string;
-}
+export const CATEGORIES = [
+  { id: "politics", toggle: "blockPolitics", keywords: "politicsKeywords", label: "🏛️ Political Content", title: "Politics", desc: "Elections, politicians, political movements" },
+  { id: "racism", toggle: "blockRacism", keywords: "racismKeywords", label: "🚫 Racism & Hate", title: "Racism / Hate Speech", desc: "Racial slurs, discrimination, bigotry" },
+  { id: "religion", toggle: "blockReligion", keywords: "religionKeywords", label: "⛪ Religious Debates", title: "Religion", desc: "Religious disputes, extremism, atheism" },
+  { id: "war", toggle: "blockWar", keywords: "warKeywords", label: "⚔️ War & Conflict", title: "War & Conflict", desc: "International conflicts, regional wars, military strikes" },
+  { id: "controversial", toggle: "blockControversial", keywords: "controversialKeywords", label: "⚡ Controversial Topics", title: "Controversial Subjects", desc: "Other highly debated internet subjects" },
+] as const;
 
 // ============================================
 // Stats
@@ -247,19 +232,3 @@ export const DEFAULT_STATS: Stats = {
   allowed: 0,
   total: 0,
 };
-
-// ============================================
-// Messages (background ↔ content script)
-// ============================================
-
-export type Message =
-  | { action: "getStats" }
-  | { action: "updateStats"; filtered: boolean }
-  | { action: "resetStats" }
-  | { action: "settingsUpdated"; settings: Settings };
-
-export type MessageResponse =
-  | { success: true; result: ClassificationResult }
-  | { success: false; error: string }
-  | { stats: Stats }
-  | { success: true };

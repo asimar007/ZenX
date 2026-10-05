@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSettings } from "../../hooks/useSettings";
+import { settingsStorage } from "@/utils/storage";
+import { CATEGORIES } from "@/utils/types";
 import { useStats } from "../../hooks/useStats";
 import { Header } from "../../components/Header";
 import { StatsBar } from "../../components/StatsBar";
@@ -9,7 +11,7 @@ import { CustomKeywordManager } from "../../components/CustomKeywordManager";
 import "./style.css";
 
 export default function App() {
-  const { settings, updateSettings, saveSettings } = useSettings();
+  const { settings, updateSettings } = useSettings();
   const { stats, resetStats } = useStats();
   const [status, setStatus] = useState<{
     message: string;
@@ -28,12 +30,8 @@ export default function App() {
 
   const handleSave = async () => {
     const hasFilter =
-      settings.blockPolitics ||
-      settings.blockRacism ||
-      settings.blockReligion ||
-      settings.blockWar ||
-      settings.blockControversial ||
-      (settings.customKeywords && settings.customKeywords.length > 0);
+      CATEGORIES.some((c) => settings[c.toggle]) ||
+      settings.customKeywords.length > 0;
 
     if (settings.enabled && !hasFilter) {
       showStatus("Please select at least one filter category", "error");
@@ -41,7 +39,7 @@ export default function App() {
     }
 
     try {
-      await saveSettings(settings);
+      await settingsStorage.setValue(settings);
       showStatus("Settings saved! Refresh X/Twitter to apply.", "success");
     } catch {
       showStatus("Error saving settings", "error");
@@ -54,7 +52,7 @@ export default function App() {
         enabled={settings.enabled}
         onToggle={async (v) => {
           updateSettings({ enabled: v });
-          await saveSettings({ ...settings, enabled: v });
+          await settingsStorage.setValue({ ...settings, enabled: v });
         }}
       />
 
@@ -72,76 +70,23 @@ export default function App() {
           </div>
 
           <div className="flex flex-col gap-2">
-            <CheckboxItem
-              id="blockPolitics"
-              label="🏛️ Political Content"
-              checked={settings.blockPolitics}
-              onChange={(v) => updateSettings({ blockPolitics: v })}
-            >
-              {settings.blockPolitics && (
-                <CategoryKeywordList
-                  categoryName="politics"
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-            </CheckboxItem>
-            <CheckboxItem
-              id="blockRacism"
-              label="🚫 Racism & Hate"
-              checked={settings.blockRacism}
-              onChange={(v) => updateSettings({ blockRacism: v })}
-            >
-              {settings.blockRacism && (
-                <CategoryKeywordList
-                  categoryName="racism"
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-            </CheckboxItem>
-            <CheckboxItem
-              id="blockReligion"
-              label="⛪ Religious Debates"
-              checked={settings.blockReligion}
-              onChange={(v) => updateSettings({ blockReligion: v })}
-            >
-              {settings.blockReligion && (
-                <CategoryKeywordList
-                  categoryName="religion"
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-            </CheckboxItem>
-            <CheckboxItem
-              id="blockWar"
-              label="⚔️ War & Conflict"
-              checked={settings.blockWar}
-              onChange={(v) => updateSettings({ blockWar: v })}
-            >
-              {settings.blockWar && (
-                <CategoryKeywordList
-                  categoryName="war"
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-            </CheckboxItem>
-            <CheckboxItem
-              id="blockControversial"
-              label="⚡ Controversial Topics"
-              checked={settings.blockControversial}
-              onChange={(v) => updateSettings({ blockControversial: v })}
-            >
-              {settings.blockControversial && (
-                <CategoryKeywordList
-                  categoryName="controversial"
-                  settings={settings}
-                  updateSettings={updateSettings}
-                />
-              )}
-            </CheckboxItem>
+            {CATEGORIES.map((c) => (
+              <CheckboxItem
+                key={c.toggle}
+                id={c.toggle}
+                label={c.label}
+                checked={settings[c.toggle]}
+                onChange={(v) => updateSettings({ [c.toggle]: v })}
+              >
+                {settings[c.toggle] && (
+                  <CategoryKeywordList
+                    categoryName={c.id}
+                    settings={settings}
+                    updateSettings={updateSettings}
+                  />
+                )}
+              </CheckboxItem>
+            ))}
           </div>
         </section>
 

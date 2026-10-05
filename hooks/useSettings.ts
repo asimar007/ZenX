@@ -7,18 +7,12 @@ export function useSettings() {
   const [settings, setSettings] = useState<Settings>({ ...DEFAULT_SETTINGS });
 
   useEffect(() => {
-    settingsStorage.getValue().then((s) => {
-      if (s) setSettings(s);
-    });
+    settingsStorage.getValue().then(setSettings);
   }, []);
 
   const updateSettings = useCallback((patch: Partial<Settings>) => {
     setSettings((prev) => ({ ...prev, ...patch }));
   }, []);
 
-  const saveSettings = async (currentSettings: Settings) => {
-    await settingsStorage.setValue(currentSettings);
-  };
-
-  return { settings, updateSettings, saveSettings };
+  return { settings, updateSettings };
 }

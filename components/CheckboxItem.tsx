@@ -6,7 +6,6 @@ export function CheckboxItem({
   checked,
   onChange,
   className = '',
-  description,
   children,
 }: {
   id: string;
@@ -14,7 +13,6 @@ export function CheckboxItem({
   checked: boolean;
   onChange: (v: boolean) => void;
   className?: string;
-  description?: string;
   children?: ReactNode;
 }) {
   return (
@@ -45,7 +43,6 @@ export function CheckboxItem({
         </div>
         <div className="flex flex-col">
           <span className={`text-sm font-medium ${checked ? 'text-white' : 'text-slate-200'} transition-colors`}>{label}</span>
-          {description && <span className="text-xs text-slate-400 mt-0.5 leading-snug">{description}</span>}
         </div>
       </label>
       {children && (

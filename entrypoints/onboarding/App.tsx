@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { settingsStorage } from "@/utils/storage";
-import { Settings, DEFAULT_SETTINGS } from "@/utils/types";
+import { Settings, DEFAULT_SETTINGS, CATEGORIES } from "@/utils/types";
 
 export default function App() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
@@ -42,35 +42,9 @@ export default function App() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-2 sm:p-6 space-y-4">
         
         {/* Toggle Items */}
-        {[
-          {
-            key: "blockPolitics",
-            title: "Politics",
-            desc: "Elections, politicians, political movements"
-          },
-          {
-            key: "blockRacism",
-            title: "Racism / Hate Speech",
-            desc: "Racial slurs, discrimination, bigotry"
-          },
-          {
-            key: "blockReligion",
-            title: "Religion",
-            desc: "Religious disputes, extremism, atheism"
-          },
-          {
-            key: "blockWar",
-            title: "War & Conflict",
-            desc: "International conflicts, regional wars, military strikes"
-          },
-          {
-            key: "blockControversial",
-            title: "Controversial Subjects",
-            desc: "Other highly debated internet subjects"
-          }
-        ].map((topic) => (
+        {CATEGORIES.map((topic) => (
           <label 
-            key={topic.key}
+            key={topic.toggle}
             className="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-black/5 hover:border-black/10 border border-transparent cursor-pointer transition-all duration-200 group"
           >
             <div>
@@ -80,15 +54,15 @@ export default function App() {
             
             {/* Custom Toggle Switch */}
             <div className="ml-4 flex-shrink-0">
-              <div className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 ease-in-out ${settings[topic.key as keyof Settings] ? 'bg-blue-600' : 'bg-gray-300'}`}>
-                <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ease-in-out shadow-sm ${settings[topic.key as keyof Settings] ? 'translate-x-6' : 'translate-x-1'}`} />
+              <div className={`relative inline-flex h-7 w-12 items-center rounded-full transition-colors duration-300 ease-in-out ${settings[topic.toggle] ? 'bg-blue-600' : 'bg-gray-300'}`}>
+                <span className={`inline-block h-5 w-5 transform rounded-full bg-white transition-transform duration-300 ease-in-out shadow-sm ${settings[topic.toggle] ? 'translate-x-6' : 'translate-x-1'}`} />
               </div>
               {/* Hidden actual checkbox for accessibility */}
               <input
                 type="checkbox"
                 className="sr-only"
-                checked={settings[topic.key as keyof Settings] as boolean}
-                onChange={() => handleToggle(topic.key as keyof Settings)}
+                checked={settings[topic.toggle]}
+                onChange={() => handleToggle(topic.toggle)}
               />
             </div>
           </label>
