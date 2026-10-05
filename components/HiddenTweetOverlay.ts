@@ -1,5 +1,7 @@
 import type { Match } from '@/utils/classifier';
 import { el } from '@/utils/dom';
+import { svg } from '@/utils/icons';
+import { CATEGORIES } from '@/utils/types';
 
 export function hideTweet(
   tweetElement: HTMLElement,
@@ -9,21 +11,26 @@ export function hideTweet(
   const cellInner = tweetElement.closest<HTMLElement>('[data-testid="cellInnerDiv"]');
   const targetElement = cellInner || tweetElement;
 
-  const categoryStrong = document.createElement('strong');
-  categoryStrong.textContent = match.category;
+  const category = CATEGORIES.find((c) => c.id === match.category);
+  const label = category?.title ?? 'Custom';
 
-  const textSpan = el('span', 'xfeed-hidden-text');
-  textSpan.append('Hidden: ', categoryStrong);
-  if (match.keyword) {
-    textSpan.append(el('span', 'xfeed-hidden-keyword', ` (${match.keyword})`));
-  }
+  const icon = el('span', 'xfeed-hidden-icon');
+  icon.innerHTML = svg(category?.icon ?? 'penLine', 16);
 
-  const showBtn = el('button', 'xfeed-show-btn', 'Show');
-  const contentWrapper = el('div', 'xfeed-hidden-content');
-  contentWrapper.append(el('span', 'xfeed-hidden-icon', '🛡️'), textSpan, showBtn);
+  const text = el('div', 'xfeed-hidden-text');
+  text.append(
+    el('p', 'xfeed-hidden-title', 'Tweet hidden by ZenX'),
+    el('span', 'xfeed-hidden-tag', match.keyword ? `${label} · "${match.keyword}"` : label),
+  );
+
+  const content = el('div', 'xfeed-hidden-content');
+  content.append(icon, text);
+
+  const showBtn = el('button', 'xfeed-show-btn', 'Reveal');
+  showBtn.setAttribute('type', 'button');
 
   const overlay = el('div', 'xfeed-hidden-tweet');
-  overlay.append(contentWrapper);
+  overlay.append(content, showBtn);
 
   showBtn.addEventListener('click', (e) => {
     e.stopPropagation();

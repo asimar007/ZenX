@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* Fonts self-hosted from zenx.asimsk.site (latin subset) */
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/fonts/cormorant-garamond-300-latin.woff2") format("woff2");
+  font-weight: 300;
+  font-display: swap;
+}
+
+/* Tokens mirror the website (zenx.asimsk.site) */
+@theme {
+  --color-forest-ink: #0f3e17;
+  --color-forest-shadow: #0c2f10;
+  --color-sage-mist: #b1dbb8;
+  --color-keylime-wash: #e1f4df;
+  --color-mint-veil: #cfe7d3;
+  --color-slate-hush: #b6ced5;
+  --color-cream-paper: #fffefc;
+  --color-charcoal: #222222;
+  --color-border-mist: #efeeeb;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+
+  --radius-xl: 14px;
+}
+
+@layer base {
+  html {
+    accent-color: var(--color-forest-ink);
+  }
+
+  body {
+    background-color: var(--color-cream-paper);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-sage-mist);
+    color: var(--color-forest-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-forest-ink);
+    outline-offset: 2px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-sage-mist) transparent;
+  }
+}

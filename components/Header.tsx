@@ -1,18 +1,14 @@
+import { Switch } from './Switch';
+
 export function Header({ enabled, onToggle }: { enabled: boolean; onToggle: (v: boolean) => void }) {
   return (
-    <header className="flex justify-between items-center px-5 py-4 bg-linear-to-br from-blue-500 to-blue-600 sticky top-0 z-10 shadow-md">
-      <div className="flex items-center gap-2.5">
-        <img src="/icon/icon.png" alt="ZenX" className="w-7 h-7 drop-shadow-sm" />
-        <h1 className="text-lg font-bold text-white tracking-wide">ZenX</h1>
-      </div>
-      <label className="relative inline-flex items-center cursor-pointer">
-        <input 
-          type="checkbox" 
-          className="sr-only peer" 
-          checked={enabled} 
-          onChange={(e) => onToggle(e.target.checked)} 
-        />
-        <div className="w-11 h-6 bg-blue-900/40 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-white/30 backdrop-blur-sm"></div>
+    <header className="sticky top-0 z-10 flex items-center justify-between px-5 py-3.5 bg-cream-paper border-b border-border-mist">
+      <img src="/logo.png" alt="ZenX" className="h-6 w-auto mix-blend-multiply" />
+      <label className="flex items-center gap-2.5 cursor-pointer">
+        <span className={`text-xs ${enabled ? 'text-forest-ink' : 'text-charcoal/70'}`}>
+          {enabled ? 'Active' : 'Paused'}
+        </span>
+        <Switch checked={enabled} onChange={onToggle} label="Enable ZenX" />
       </label>
     </header>
   );

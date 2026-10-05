@@ -1,4 +1,4 @@
-/* content.css - Styles for ZenX */
+/* content.css - Styles for ZenX, palette from zenx.asimsk.site */
 
 /* Hidden tweet container */
 
@@ -6,133 +6,190 @@
   display: none !important;
 }
 
-/* Hidden tweet overlay */
+/* Theme tokens. Default: X dark ("Lights out") */
+.xfeed-hidden-tweet,
+#xfeed-filter-stats {
+  --zx-surface: rgba(177, 219, 184, 0.08);
+  --zx-badge: #151a16;
+  --zx-border: #2f3336;
+  --zx-text: #e7e9ea;
+  --zx-chip: rgba(177, 219, 184, 0.14);
+  --zx-ink: #b1dbb8;
+  --zx-tag: rgba(177, 219, 184, 0.12);
+  --zx-btn: #b1dbb8;
+  --zx-btn-text: #0f3e17;
+  --zx-btn-hover: #cfe7d3;
+}
+
+/* Hidden tweet row */
 .xfeed-hidden-tweet {
   display: flex !important;
   align-items: center !important;
-  justify-content: center !important;
-  background: var(--background-color, #15202b) !important;
-  border-bottom: 1px solid var(--border-color, #38444d) !important;
-  z-index: 10 !important;
-  padding: 4px 16px !important;
-  height: 48px !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+  background: var(--zx-surface) !important;
+  border-bottom: 1px solid var(--zx-border) !important;
+  padding: 14px 18px !important;
   box-sizing: border-box !important;
+  font-family: inherit !important;
 }
 
 .xfeed-hidden-content {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  color: var(--text-color-secondary, #8899a6) !important;
-  font-size: 13px !important;
+  gap: 12px !important;
+  min-width: 0 !important;
 }
 
 .xfeed-hidden-icon {
-  font-size: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 9999px !important;
+  background: var(--zx-chip) !important;
+  color: var(--zx-ink) !important;
 }
 
 .xfeed-hidden-text {
-  color: var(--text-color-secondary, #8899a6) !important;
+  min-width: 0 !important;
 }
 
-.xfeed-hidden-text strong {
-  color: var(--text-color, #ffffff) !important;
-  font-weight: 600 !important;
+.xfeed-hidden-title {
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  color: var(--zx-text) !important;
 }
 
-.xfeed-hidden-keyword {
-  opacity: 0.7 !important;
-  font-size: 0.9em !important;
-  margin-left: 4px !important;
+.xfeed-hidden-tag {
+  display: inline-block !important;
+  max-width: 100% !important;
+  margin-top: 4px !important;
+  padding: 2px 9px !important;
+  border-radius: 9999px !important;
+  background: var(--zx-tag) !important;
+  color: var(--zx-ink) !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  box-sizing: border-box !important;
 }
 
 .xfeed-show-btn {
-  background: transparent !important;
-  border: 1px solid var(--border-color, #38444d) !important;
-  color: var(--accent-color, #1d9bf0) !important;
-  padding: 4px 10px !important;
-  border-radius: 9999px !important;
+  flex-shrink: 0 !important;
+  background: var(--zx-btn) !important;
+  color: var(--zx-btn-text) !important;
+  border: 0 !important;
+  padding: 7px 14px !important;
+  border-radius: 12px !important;
+  font-family: inherit !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
-  margin-left: 8px !important;
+  transition: background-color 0.2s ease !important;
 }
 
 .xfeed-show-btn:hover {
-  background: rgba(29, 155, 240, 0.1) !important;
-  border-color: var(--accent-color, #1d9bf0) !important;
+  background: var(--zx-btn-hover) !important;
 }
 
-/* Stats display */
+.xfeed-show-btn:focus-visible {
+  outline: 2px solid var(--zx-ink) !important;
+  outline-offset: 2px !important;
+}
+
+/* Stats badge */
 #xfeed-filter-stats {
   position: fixed !important;
   bottom: 20px !important;
   right: 20px !important;
-  background: var(--background-color, #15202b) !important;
-  border: 1px solid var(--border-color, #38444d) !important;
-  border-radius: 20px !important;
-  padding: 8px 16px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  background: var(--zx-badge) !important;
+  border: 1px solid var(--zx-border) !important;
+  border-radius: 9999px !important;
+  padding: 7px 14px !important;
   z-index: 9999 !important;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    "TwitterChirp", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif !important;
 }
 
 .xfeed-stats-content {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
-  color: var(--text-color, #ffffff) !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
+  gap: 7px !important;
+  color: var(--zx-ink) !important;
+  font-size: 13px !important;
 }
 
 .xfeed-stats-icon {
-  font-size: 16px !important;
-}
-
-.xfeed-stats-text {
-  color: var(--text-color-secondary, #8899a6) !important;
+  display: flex !important;
 }
 
 #xfeed-filtered-count {
-  color: var(--accent-color, #1d9bf0) !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums !important;
 }
 
 /* Theme support */
 @media (prefers-color-scheme: light) {
   .xfeed-hidden-tweet,
   #xfeed-filter-stats {
-    --background-color: #ffffff;
-    --border-color: #cfd9de;
-    --text-color: #0f1419;
-    --text-color-secondary: #536471;
-    --accent-color: #1d9bf0;
+    --zx-surface: #e1f4df;
+    --zx-badge: #e1f4df;
+    --zx-border: #cfe7d3;
+    --zx-text: #222222;
+    --zx-chip: #cfe7d3;
+    --zx-ink: #0f3e17;
+    --zx-tag: #fffefc;
+    --zx-btn: #0f3e17;
+    --zx-btn-text: #fffefc;
+    --zx-btn-hover: #0c2f10;
   }
 }
 
 [data-color-scheme="dim"] .xfeed-hidden-tweet,
 [data-color-scheme="dim"] #xfeed-filter-stats {
-  --background-color: #15202b;
-  --border-color: #38444d;
-  --text-color: #ffffff;
-  --text-color-secondary: #8899a6;
+  --zx-surface: rgba(177, 219, 184, 0.08);
+  --zx-badge: #28363c;
+  --zx-border: #38444d;
+  --zx-text: #f7f9f9;
+  --zx-chip: rgba(177, 219, 184, 0.14);
+  --zx-ink: #b1dbb8;
+  --zx-tag: rgba(177, 219, 184, 0.12);
+  --zx-btn: #b1dbb8;
+  --zx-btn-text: #0f3e17;
+  --zx-btn-hover: #cfe7d3;
 }
 
 [data-color-scheme="dark"] .xfeed-hidden-tweet,
 [data-color-scheme="dark"] #xfeed-filter-stats {
-  --background-color: #000000;
-  --border-color: #2f3336;
-  --text-color: #e7e9ea;
-  --text-color-secondary: #71767b;
+  --zx-surface: rgba(177, 219, 184, 0.08);
+  --zx-badge: #151a16;
+  --zx-border: #2f3336;
+  --zx-text: #e7e9ea;
+  --zx-chip: rgba(177, 219, 184, 0.14);
+  --zx-ink: #b1dbb8;
+  --zx-tag: rgba(177, 219, 184, 0.12);
+  --zx-btn: #b1dbb8;
+  --zx-btn-text: #0f3e17;
+  --zx-btn-hover: #cfe7d3;
 }
 
 [data-color-scheme="light"] .xfeed-hidden-tweet,
 [data-color-scheme="light"] #xfeed-filter-stats {
-  --background-color: #ffffff;
-  --border-color: #eff3f4;
-  --text-color: #0f1419;
-  --text-color-secondary: #536471;
+  --zx-surface: #e1f4df;
+  --zx-badge: #e1f4df;
+  --zx-border: #cfe7d3;
+  --zx-text: #222222;
+  --zx-chip: #cfe7d3;
+  --zx-ink: #0f3e17;
+  --zx-tag: #fffefc;
+  --zx-btn: #0f3e17;
+  --zx-btn-text: #fffefc;
+  --zx-btn-hover: #0c2f10;
 }

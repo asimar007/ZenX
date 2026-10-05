@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import { useSettings } from "../../hooks/useSettings";
+import { useStats } from "../../hooks/useStats";
 import { settingsStorage } from "@/utils/storage";
 import { CATEGORIES } from "@/utils/types";
-import { useStats } from "../../hooks/useStats";
 import { Header } from "../../components/Header";
 import { StatsBar } from "../../components/StatsBar";
 import { CheckboxItem } from "../../components/CheckboxItem";
 import { CategoryKeywordList } from "../../components/CategoryKeywordList";
 import { CustomKeywordManager } from "../../components/CustomKeywordManager";
-import "./style.css";
+import { Icon } from "../../components/Icon";
+import "@/assets/tailwind.css";
+
+const sectionTitle = "text-[11px] font-semibold uppercase tracking-[0.08em] text-forest-ink";
 
 export default function App() {
   const { settings, updateSettings } = useSettings();
@@ -34,20 +37,20 @@ export default function App() {
       settings.customKeywords.length > 0;
 
     if (settings.enabled && !hasFilter) {
-      showStatus("Please select at least one filter category", "error");
+      showStatus("Select at least one category or add a keyword", "error");
       return;
     }
 
     try {
       await settingsStorage.setValue(settings);
-      showStatus("Settings saved! Refresh X/Twitter to apply.", "success");
+      showStatus("Saved. Open X tabs update automatically.", "success");
     } catch {
-      showStatus("Error saving settings", "error");
+      showStatus("Couldn't save settings. Try again.", "error");
     }
   };
 
   return (
-    <div className="flex flex-col w-[360px] max-h-[600px] overflow-y-auto bg-slate-900 text-slate-100 font-sans shadow-2xl antialiased">
+    <div className="flex flex-col w-90 max-h-150 overflow-y-auto bg-cream-paper text-charcoal">
       <Header
         enabled={settings.enabled}
         onToggle={async (v) => {
@@ -58,23 +61,20 @@ export default function App() {
 
       <StatsBar stats={stats} onReset={resetStats} />
 
-      <div className="p-5 flex flex-col gap-6">
+      <main className="px-4 pt-6 pb-5 flex flex-col gap-7">
         <section className="flex flex-col gap-3">
-          <div className="flex flex-col">
-            <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-              Filter Categories
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Select content types to hide from your feed
-            </p>
+          <div>
+            <h2 className={sectionTitle}>Filters</h2>
+            <p className="mt-1 text-xs text-charcoal/70">Choose what stays out of your feed.</p>
           </div>
 
           <div className="flex flex-col gap-2">
             {CATEGORIES.map((c) => (
               <CheckboxItem
                 key={c.toggle}
-                id={c.toggle}
+                icon={c.icon}
                 label={c.label}
+                meta={`${settings[c.keywords].length} keywords`}
                 checked={settings[c.toggle]}
                 onChange={(v) => updateSettings({ [c.toggle]: v })}
               >
@@ -96,49 +96,50 @@ export default function App() {
         />
 
         <section className="flex flex-col gap-3">
-          <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest">
-            Display Options
-          </h2>
-          <div className="flex flex-col gap-2">
-            <CheckboxItem
-              id="showFilteredCount"
-              label="Show filtered count badge"
-              checked={settings.showFilteredCount}
-              onChange={(v) => updateSettings({ showFilteredCount: v })}
-              className="bg-transparent hover:bg-slate-800/50 p-2"
-            />
-          </div>
+          <h2 className={sectionTitle}>Display</h2>
+          <CheckboxItem
+            icon="eye"
+            label="Show filtered count badge"
+            meta="Small counter in the corner of X"
+            checked={settings.showFilteredCount}
+            onChange={(v) => updateSettings({ showFilteredCount: v })}
+          />
         </section>
 
-        <div className="flex flex-col pt-2 pb-4 mt-2">
-          <button
-            className="w-full py-3.5 bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-400 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg border border-blue-400/30 transition-all active:scale-[0.98] transform cursor-pointer"
-            onClick={handleSave}
-          >
-            Save Configuration
-          </button>
+        <a
+          href="https://zenx.asimsk.site"
+          target="_blank"
+          rel="noreferrer"
+          className="self-center text-xs text-charcoal/70 hover:text-forest-ink underline-offset-2 hover:underline"
+        >
+          zenx.asimsk.site
+        </a>
+      </main>
 
-          <div className="h-6 mt-3 flex items-center justify-center">
-            {status && (
-              <div
-                className={`text-sm font-medium px-3 py-1 rounded-full animate-in fade-in slide-in-from-bottom-2 duration-300 ${
-                  status.type === "success"
-                    ? "bg-green-500/10 text-green-400"
-                    : "bg-red-500/10 text-red-400"
-                }`}
-              >
-                {status.message}
-              </div>
-            )}
-          </div>
+      <div className="sticky bottom-0 px-4 pt-3 pb-4 bg-cream-paper border-t border-border-mist">
+        <div role="status" aria-live="polite" className="empty:hidden mb-2.5">
+          {status && (
+            <p
+              className={`flex items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-xs ${
+                status.type === "success"
+                  ? "bg-keylime-wash text-forest-ink"
+                  : "bg-border-mist text-charcoal"
+              }`}
+            >
+              <Icon name={status.type === "success" ? "shieldCheck" : "ban"} className="size-3.5" />
+              {status.message}
+            </p>
+          )}
         </div>
+        <button
+          type="button"
+          className="group w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-forest-ink text-cream-paper text-sm hover:bg-forest-shadow active:scale-[0.99] transition-[background-color,transform] duration-200 cursor-pointer"
+          onClick={handleSave}
+        >
+          Save changes
+          <Icon name="arrowRight" className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" strokeWidth={2} />
+        </button>
       </div>
-
-      <footer className="py-4 text-center border-t border-slate-800 bg-slate-900/50">
-        <p className="text-xs font-medium text-slate-500">
-          Made with <span className="text-red-500">❤️</span> for a cleaner feed
-        </p>
-      </footer>
     </div>
   );
 }

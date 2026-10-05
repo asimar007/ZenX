@@ -1,0 +1,14 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-05T15:05:46.477Z",
+        "reason": "brief pinned: zenx.asimsk.site ships Inter as its body font (site.css --font-sans); extension must match the site"
+      }
+    ]
+  }
+}

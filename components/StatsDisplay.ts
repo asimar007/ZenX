@@ -1,4 +1,5 @@
 import { el } from '@/utils/dom';
+import { svg } from '@/utils/icons';
 
 let statsDisplay: HTMLElement | null = null;
 
@@ -12,8 +13,11 @@ export function createStatsDisplay() {
   const textSpan = el('span', 'xfeed-stats-text');
   textSpan.append(countSpan, ' filtered');
 
+  const icon = el('span', 'xfeed-stats-icon');
+  icon.innerHTML = svg('shieldCheck', 15);
+
   const contentDiv = el('div', 'xfeed-stats-content');
-  contentDiv.append(el('span', 'xfeed-stats-icon', '🛡️'), textSpan);
+  contentDiv.append(icon, textSpan);
 
   statsDisplay = document.createElement('div');
   statsDisplay.id = 'xfeed-filter-stats';

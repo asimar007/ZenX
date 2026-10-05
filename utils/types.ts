@@ -210,11 +210,11 @@ export const DEFAULT_SETTINGS: Settings = {
 };
 
 export const CATEGORIES = [
-  { id: "politics", toggle: "blockPolitics", keywords: "politicsKeywords", label: "🏛️ Political Content", title: "Politics", desc: "Elections, politicians, political movements" },
-  { id: "racism", toggle: "blockRacism", keywords: "racismKeywords", label: "🚫 Racism & Hate", title: "Racism / Hate Speech", desc: "Racial slurs, discrimination, bigotry" },
-  { id: "religion", toggle: "blockReligion", keywords: "religionKeywords", label: "⛪ Religious Debates", title: "Religion", desc: "Religious disputes, extremism, atheism" },
-  { id: "war", toggle: "blockWar", keywords: "warKeywords", label: "⚔️ War & Conflict", title: "War & Conflict", desc: "International conflicts, regional wars, military strikes" },
-  { id: "controversial", toggle: "blockControversial", keywords: "controversialKeywords", label: "⚡ Controversial Topics", title: "Controversial Subjects", desc: "Other highly debated internet subjects" },
+  { id: "politics", toggle: "blockPolitics", keywords: "politicsKeywords", icon: "landmark", label: "Political Content", title: "Politics", desc: "Elections, politicians, political movements" },
+  { id: "racism", toggle: "blockRacism", keywords: "racismKeywords", icon: "ban", label: "Racism & Hate", title: "Racism / Hate Speech", desc: "Racial slurs, discrimination, bigotry" },
+  { id: "religion", toggle: "blockReligion", keywords: "religionKeywords", icon: "church", label: "Religious Debates", title: "Religion", desc: "Religious disputes, extremism, atheism" },
+  { id: "war", toggle: "blockWar", keywords: "warKeywords", icon: "swords", label: "War & Conflict", title: "War & Conflict", desc: "International conflicts, regional wars, military strikes" },
+  { id: "controversial", toggle: "blockControversial", keywords: "controversialKeywords", icon: "zap", label: "Controversial Topics", title: "Controversial Subjects", desc: "Other highly debated internet subjects" },
 ] as const;
 
 // ============================================
