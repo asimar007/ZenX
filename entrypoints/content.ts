@@ -43,7 +43,8 @@ export default defineContentScript({
     async function init() {
       settings = await settingsStorage.getValue();
 
-      if (settings.showFilteredCount) {
+      // Same rule as the settings watcher below: no badge while disabled.
+      if (settings.enabled && settings.showFilteredCount) {
         createStatsDisplay();
       }
 

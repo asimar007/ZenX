@@ -14,7 +14,7 @@ import "@/assets/tailwind.css";
 const sectionTitle = "text-[11px] font-semibold uppercase tracking-[0.08em] text-forest-ink";
 
 export default function App() {
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, loaded } = useSettings();
   const { stats, resetStats } = useStats();
   const [status, setStatus] = useState<{
     message: string;
@@ -48,6 +48,9 @@ export default function App() {
       showStatus("Couldn't save settings. Try again.", "error");
     }
   };
+
+  // Render only after stored settings load, so the switch never shows the default "Active".
+  if (!loaded) return <div className="w-90 h-150 bg-cream-paper" />;
 
   return (
     <div className="flex flex-col w-90 max-h-150 overflow-y-auto bg-cream-paper text-charcoal">
